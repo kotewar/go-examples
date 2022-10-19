@@ -14,15 +14,15 @@ jobs:
       id: go-cache-dir-path
       run: echo "::set-output name=dir::$(go env GOCACHE)"
       shell: bash
-   - uses: actions/cache@v3
-    id: go-cache
-    with:
-      path: ${{ steps.go-cache-dir-path.outputs.dir }}
-      key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-      restore-keys: |
-        ${{ runner.os }}-go-
+    - uses: actions/cache@v3
+      id: go-cache
+      with:
+        path: ${{ steps.go-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
 
-  - name: Install go deps
-    shell: bash
-    run: go mod download
-    if: steps.go-cache.outputs.cache-hit != 'true'
+    - name: Install go deps
+      shell: bash
+      run: go mod download
+      if: steps.go-cache.outputs.cache-hit != 'true'
